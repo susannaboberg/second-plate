@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">  
+    <title>Food Distribution Service</title>
+</head>
+<body>
+    <h1>Food Distribution service</h1>
+
+    <nav class="tab">
+        <button class="tab-links" onclick="showTab(event, 'tab-provider')">Provider</button>
+        <button class="tab-links" onclick="showTab(event, 'tab-volunteer')">Volunteer</button>
+        <button class="tab-links" onclick="showTab(event, 'tab-recipient')">Recipient</button>
+        <button class="tab-links" onclick="showTab(event, 'tab-employee')">Analytics</button>
+    </nav>
+
+    <!-- PROVIDER TAB BELOW-->
+     <div id="tab-provider" class="tab-content">
+        <h2>Provider</h2>
+
+        <!--Provider ID info-->
+        <form>
+            <fieldset id="provider-id-login">
+                <legend>Enter Provider Information</legend>
+                <label for="providerID">Provider ID</label>
+                <input type="text" id="providerID" placeholder="Enter provider ID">
+                <button type="button" onclick="submitProviderID()">Submit</button>
+                <p id="provider-id-error" style="display:none; color:red;">ID does not exist.</p>
+            </fieldset>
+        </form>
+
+        
+        <div id="provider-main">
+            <p id="provider-welcome" style="display:none; font-weight:bold;"></p>
+            <form>
+                <fieldset>
+                    <legend>Food Items</legend>
+                    <table id="food-items-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Brand</th>
+                                <th>Food Name</th>
+                                <th>Category</th>
+                                <th>Allergens</th>
+                                <th>Quantity</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="food-items-tbody">
+
+                        </tbody>
+                    </table>
+                    <div class="add-food-item">
+                        <button type="button" class="action-btn" onclick="addFoodItem()">Add Food Item</button>
+                    </div>
+                    </fieldset>
+
+                <button type = "button" class="action-btn" onclick="submitDonation(event)">Submit Donation</button>
+                </form>
+
+            <div id="confirmation">
+                <p id="confirmation-details"></p>
+                <p id="donation-enter-error" style="display:none; color:red;"></p>
+            </div>
+
+            <div class="logout-bar">
+                <button type="button" onclick="logout('provider')">Log Out</button>
+            </div>
+        </div>
+     </div>
+
+
+    <!-- VOLUNTEER TAB BELOW-->
+    <div id="tab-volunteer" class="tab-content">
+        <h2>Volunteer</h2>
+        <!--volunteer ID info-->
+        <fieldset id="volunteer-id-login">
+            <legend>Enter Volunteer Information</legend>
+            <label for="volunteerID">Volunteer ID</label>
+            <input type="text" id="volunteerID" placeholder="Enter volunteer ID">
+            <button type="button" onclick="submitVolunteerID()">Submit</button>
+            <p id="volunteer-id-error" style="display:none; color:red;">ID does not exist.</p>
+        </fieldset>
+
+        <div id="volunteer-main">
+            <p id="volunteer-welcome" style="display:none; font-weight:bold;"></p>
+            <h3>Unclaimed Donation Deliveries</h3>
+            <table id="unclaimed-donations-table">
+                <thead id="unclaimed-donations-head">
+                    <tr>
+                        <th> Donation ID </th>
+                        <th>Provider Chain</th>
+                        <th> Provider Name</th>
+                        <th>Pickup Location</th>
+                        <th>Date Offered</th>
+                        <th>Total Units</th>
+                        <th>Claim Donation</th>
+                    </tr>
+                </thead>
+
+                <tbody id="unclaimed-donations-tbody">
+
+                </tbody>
+            </table>
+            <p id="unclaimed-donations-empty" style="display:none;">No unclaimed donations available.</p>
+            
+
+            <h3>Your Active Deliveries</h3>
+            <table id="uncompleted-donations-table">
+                <thead id="uncompleted-donations-head">
+                    <tr>
+                        <th> Donation ID </th>
+                        <th>Recipient Chain</th>
+                        <th>Recipient Name</th>
+                        <th>Date Offered</th>
+                        <th>Destination</th>
+                        <th>Total Units</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="uncompleted-donations-tbody">
+
+                </tbody>
+            </table>
+
+            <div id="vol-confirmation">
+                <p id="vol-confirmation-details"></p>
+            </div>
+
+            <div class="logout-bar">
+                <button type="button" onclick="logout('volunteer')">Log Out</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECIPIENT TAB BELOW-->
+    <div id="tab-recipient" class="tab-content">
+        <h2>Recipient</h2>
+        <fieldset id="recipient-id-login">
+            <legend>Enter Recipient Information</legend>
+            <label for="recipientID">Recipient ID</label>
+            <input type="text" id="recipientID" placeholder="Enter recipient ID">
+            <button type="button" onclick="submitRecipientID()">Submit</button>
+            <p id="recipient-id-error" style="display:none; color:red;">ID does not exist.</p>
+        </fieldset>
+
+        <div id="recipient-main">
+             <p id="recipient-welcome" style="display:none; font-weight:bold;"></p>
+            <h3>Available Food</h3>
+            <div class="food-filter-btn">
+                <button type="button" onclick="toggleFilters()">Filter</button>
+            </div>
+            <div id="filter-panel" style="display:none;">
+                <fieldset>
+                    <legend>Filter Options</legend>
+                    <label for="filterBrand">Brand</label>
+                    <input type="text" id="filterBrand" placeholder="e.g. Campbell's">
+                    <label for="filterName">Food Name</label>
+                    <input type="text" id="filterName" placeholder="e.g. Tomato Soup">
+                    <label for="filterCategory">Category</label>
+                    <select id="filterCategory">
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="Canned Goods">Canned Goods</option>
+                        <option value="Grain">Grain</option>
+                        <option value="Protein">Protein</option>
+                        <option value="Produce">Produce</option>
+                        <option value="Dairy">Dairy</option>
+                        <option value="Condiments and Cooking">Condiments & Cooking</option>
+                        <option value="Snacks and Beverages">Snacks & Beverages</option>
+                    </select>
+                    <button type="button" onclick="applyFilters()">Apply Filters</button>
+                    <button type="button" onclick="clearFilters()">Clear</button>
+                </fieldset>
+            </div>
+            <table id="available-foods-table">
+                <thead>
+                    <tr id="available-foods-head">
+                        <th>Food Brand</th>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Allergens</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+
+                <tbody id="available-foods-tbody">
+
+                </tbody>
+            </table>
+            <div class="logout-bar">
+                 <button type="button" onclick="logout('recipient')">Log Out</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ANALYTICS TAB BELOW-->
+    <div id="tab-employee" class="tab-content">
+        <h2>Analytics</h2>
+        <p id="employee-welcome" style="display:none; font-weight:bold;"></p>
+
+        <fieldset id="employee-id-login">
+            <legend>Employee Login</legend>
+            <label for="employeeID">Employee ID</label>
+            <input type="text" id="employeeID" placeholder="Enter employee ID">
+            <button type="button" onclick="submitEmployeeID()">Submit</button>
+            <p id="employee-id-error" style="display:none; color:red;"></p>
+        </fieldset>
+
+        <div id="employee-main" style="display:none;">
+
+            <!-- All Volunteers -->
+            <fieldset>
+                <legend>All Volunteers</legend>
+                <table id="all-volunteers-table">
+                    <thead id="all-volunteers-head">
+                        <tr>
+                            <th>Volunteer ID</th>
+                            <th>Name</th>
+                            <th>Remove From System</th>
+                        </tr>
+                    </thead>
+                    <tbody id="all-volunteers-tbody"></tbody>
+                </table>
+                <p id="all-volunteers-empty" style="display:none;">No volunteers found.</p>
+                <p id = "delete-vol-confirm"></p>
+            </fieldset>
+
+        <!-- All Vehicles -->
+        <fieldset>
+        <legend>All Vehicles</legend>
+        <div class="projection-controls">
+            <p class="projection-label">Select columns to display:</p>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="volunteer-check" value="Vo.volunteerName"> Owner Name
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="plate-check" value="Ve.plateNumber"> Plate Number
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="make-check" value="Ve.vehicleMake"> Make
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="model-check" value="Ve.vehicleModel"> Model
+                </label>
+            </div>
+            <button type="button" onclick="viewVehicles()">View</button>
+        </div>
+
+        <table id="all-vehicles-table">
+            <thead>
+                <tr id="veh-table-head"></tr>
+            </thead>
+            <tbody id="all-vehicles-tbody"></tbody>
+        </table>
+        <p id="all-vehicles-empty" style="display:none;">No vehicles found.</p>
+    </fieldset>
+
+            <!-- Completed Donations -->
+            <fieldset>
+                <legend>Completed Donations</legend>
+                <table id="completed-donations-table">
+                    <thead id="completed-donations-head">
+                        <tr>
+                            <th>Donation ID</th>
+                            <th>Provider Name</th>
+                            <th>Volunteer Name</th>
+                            <th>Created</th>
+                            <th>Dropped Off</th>
+                        </tr>
+                    </thead>
+                    <tbody id="completed-donations-tbody"></tbody>
+                </table>
+                <p id="completed-donations-empty" style="display:none;">No completed donations found.</p>
+            </fieldset>
+            
+            <!-- query 1: donation pickups per volunteer-->
+            <fieldset>
+                <legend>Completed Deliveries per Volunteer</legend>
+                <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #555;">
+                Shows how many donations each volunteer has successfully delivered to the warehouse. Optionally filter by date range.
+                </p>
+                <label for="pickupStartDate">Start Date (optional)</label>
+                <input type="date" id="pickupStartDate">
+                <label for="pickupEndDate">End Date (optional)</label>
+                <input type="date" id="pickupEndDate">
+                <button type="button" onclick="showPickupsPerVolunteer()">Show</button>
+                <table id="pickups-table" style="display: none;">
+                    <thead id="pickups-head">
+                        <tr>
+                            <th>Volunteer ID</th>
+                            <th>Name</th>
+                            <th>Total Donation Deliveries</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pickups-tbody">
+
+                    </tbody>
+                    <p id="pickups-empty" style="display: none;">No deliveries found.</p>
+                </table>
+            </fieldset>
+
+            <!-- query 2: foods donated more than X times -->
+            <fieldset>
+                <legend> Most Donated Foods</legend>
+                <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #555;">
+                Shows food items whose total donated quantity across all donations exceeds the minimum you set. Optionally filter by brand, name, or category.
+                </p>    
+                <label for="minUnitsDonated">Minimum Quantity of each Food Item Donated</label>
+                <input type="number" id="minUnitsDonated" min="1">
+                <label for="foodBrand">Brand (optional)</label>
+                <input type="text" id="foodBrand" placeholder="e.g. Campbell's">
+                <label for="foodName">Food Name (optional)</label>
+                <input type="text" id="foodName" placeholder="e.g. Tomato Soup">
+                <button type="button" onclick="showMinDonated()">Show</button>
+                <table id="min-donated-table" style="display:none;">
+                    <thead id="min-donated-head">
+                        <tr>
+                            <th>Brand</th>
+                            <th>Food Name</th>
+                            <th>Category</th>
+                            <th>Total Units Donated</th>
+                        </tr>
+                    </thead>
+                    <tbody id="min-donated-tbody">
+
+                    </tbody>
+                </table>
+                <p id="min-donated-empty" style="display:none;">No results found.</p>
+            </fieldset>
+
+            <!-- query 3: items donated above average, within a (optional) date range-->
+            <fieldset>
+                <legend>Foods Donated Above Average</legend>
+                <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #555;">
+                Shows food items whose total donated quantity is higher than the average across all food items, within the selected date range. Useful for identifying what donors contribute most.
+                </p>
+                <label for="aboveAvgStartDate">Start Date</label>
+                <input type="date" id="aboveAvgStartDate">
+                <label for="aboveAvgEndDate">End Date</label>
+                <input type="date" id="aboveAvgEndDate">
+                <button type="button" onclick="showAboveAverageFoods()">Show</button>
+                <table id="above-avg-foods-table" style="display: none;">
+                    <thead id="above-avg-foods-head">
+                        <tr>
+                            <th>Brand</th>
+                            <th>Food Name</th>
+                            <th>Category</th>
+                            <th>Total Donated</th>
+                        </tr>
+                    </thead>
+                    <tbody id="above-avg-foods-tbody">
+
+                    </tbody>
+                </table>
+                <p id="above-avg-empty" style="display: none">No results found.</p>
+            </fieldset>
+
+            <!-- query 4: foods requested by every recipient org-->
+            <fieldset>
+                <legend>Universally Requested Foods</legend>
+                <p style="margin: 0 0 10px 0; font-size: 0.9em; color: #555;">
+                Shows food items that have been requested by every recipient organization — indicating universal demand.
+                </p>
+                <button type="button" onclick="showUniversallyRequested()" style="margin-bottom: 12px;">Show</button>
+                <table id="universal-foods-table" style="display: none;">
+                    <thead id="universal-foods-head">
+                        <tr>
+                            <th>Brand</th>
+                            <th>Food Name</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody id="universal-foods-tbody">
+
+                    </tbody>
+                </table>
+                <p id="universal-foods-empty" style="display: none;">No foods have been donated to every organization.</p>
+            </fieldset>
+            <div class="logout-bar">
+                <button type="button" onclick="logout('employee')">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+<script src="web-scripts.js"></script>
+</body>
+</html>
