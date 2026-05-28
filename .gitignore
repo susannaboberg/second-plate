@@ -1,0 +1,6 @@
+# ignore automatically generated files
+*.o
+*~
+.DS_Store
+.env
+wallet/
