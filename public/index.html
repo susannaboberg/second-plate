@@ -139,7 +139,7 @@
 
     </div>
 
-    <!-- RECIPIENT TAB BELOW-->
+ <!-- RECIPIENT TAB BELOW-->
     <div id="tab-recipient" class="tab-content">
         <h2>Recipient</h2>
         <fieldset id="recipient-id-login">
@@ -149,55 +149,94 @@
             <button type="button" onclick="submitRecipientID()">Submit</button>
             <p id="recipient-id-error" style="display:none; color:red;">ID does not exist.</p>
         </fieldset>
-
+ 
         <div id="recipient-main">
-             <p id="recipient-welcome" style="display:none; font-weight:bold;"></p>
+            <p id="recipient-welcome" style="display:none; font-weight:bold;"></p>
+ 
             <h3>Available Food</h3>
-            <div class="food-filter-btn">
-                <button type="button" onclick="toggleFilters()">Filter</button>
+ 
+            <!-- Category sidebar + food table layout -->
+            <div class="recipient-food-layout">
+ 
+                <!-- Left: category sidebar -->
+                <nav class="category-sidebar">
+                    <button class="category-tab active" onclick="selectCategory(event, null)">All</button>
+                    <button class="category-tab" onclick="selectCategory(event, 'Canned Goods')">Canned Goods</button>
+                    <button class="category-tab" onclick="selectCategory(event, 'Grain')">Grain</button>
+                    <button class="category-tab" onclick="selectCategory(event, 'Protein')">Protein</button>
+                    <button class="category-tab" onclick="selectCategory(event, 'Produce')">Produce</button>
+                    <button class="category-tab" onclick="selectCategory(event, 'Dairy')">Dairy</button>
+                    <button class="category-tab" onclick="selectCategory(event, 'Condiments and Cooking')">Condiments &amp; Cooking</button>
+                    <button class="category-tab" onclick="selectCategory(event, 'Snacks and Beverages')">Snacks &amp; Beverages</button>
+                </nav>
+ 
+                <!-- Right: filters + table -->
+                <div class="recipient-food-right">
+ 
+                    <!-- Collapsible extra filters -->
+                    <div class="food-filter-bar">
+                        <button type="button" class="filter-toggle-btn" onclick="toggleFilters()">&#9660; More Filters</button>
+                    </div>
+ 
+                    <div id="filter-panel" style="display:none;">
+                        <fieldset class="filter-fieldset">
+                            <legend>Additional Filters</legend>
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label for="filterBrand">Brand</label>
+                                    <input type="text" id="filterBrand" placeholder="e.g. Campbell's">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterName">Food Name</label>
+                                    <input type="text" id="filterName" placeholder="e.g. Tomato Soup">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterMinQty">Min Quantity Available</label>
+                                    <input type="number" id="filterMinQty" min="1" placeholder="e.g. 5">
+                                </div>
+                            </div>
+                            <div class="filter-actions">
+                                <button type="button" onclick="applyFilters()">Apply</button>
+                                <button type="button" onclick="clearFilters()">Clear</button>
+                            </div>
+                        </fieldset>
+                    </div>
+ 
+                    <!-- Food table with quantity request inputs -->
+                    <table id="available-foods-table">
+                        <thead>
+                            <tr id="available-foods-head">
+                                <th>Food Brand</th>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Allergens</th>
+                                <th>Available Qty</th>
+                                <th>Request Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody id="available-foods-tbody">
+                        </tbody>
+                    </table>
+                    <p id="available-foods-empty" style="display:none; color:#555;">No foods found.</p>
+ 
+                    <!-- Request submission -->
+                    <div class="request-submit-bar">
+                        <button type="button" class="action-btn" onclick="submitRequest()">Submit Request</button>
+                    </div>
+ 
+                    <div id="request-confirmation">
+                        <p id="request-confirmation-details" style="display:none; color:green;"></p>
+                        <p id="request-error" style="display:none; color:red;"></p>
+                    </div>
+ 
+                </div>
             </div>
-            <div id="filter-panel" style="display:none;">
-                <fieldset>
-                    <legend>Filter Options</legend>
-                    <label for="filterBrand">Brand</label>
-                    <input type="text" id="filterBrand" placeholder="e.g. Campbell's">
-                    <label for="filterName">Food Name</label>
-                    <input type="text" id="filterName" placeholder="e.g. Tomato Soup">
-                    <label for="filterCategory">Category</label>
-                    <select id="filterCategory">
-                        <option value="" disabled selected>Select a category</option>
-                        <option value="Canned Goods">Canned Goods</option>
-                        <option value="Grain">Grain</option>
-                        <option value="Protein">Protein</option>
-                        <option value="Produce">Produce</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="Condiments and Cooking">Condiments & Cooking</option>
-                        <option value="Snacks and Beverages">Snacks & Beverages</option>
-                    </select>
-                    <button type="button" onclick="applyFilters()">Apply Filters</button>
-                    <button type="button" onclick="clearFilters()">Clear</button>
-                </fieldset>
-            </div>
-            <table id="available-foods-table">
-                <thead>
-                    <tr id="available-foods-head">
-                        <th>Food Brand</th>
-                        <th>Item Name</th>
-                        <th>Category</th>
-                        <th>Allergens</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-
-                <tbody id="available-foods-tbody">
-
-                </tbody>
-            </table>
+ 
             <div class="logout-bar">
                  <button type="button" onclick="logout('recipient')">Log Out</button>
             </div>
         </div>
-
+ 
     </div>
 
     <!-- ANALYTICS TAB BELOW-->
@@ -390,6 +429,10 @@
         </div>
     </div>
 
-<script src="web-scripts.js"></script>
+<script src="js/main.js"></script>
+<script src="js/provider.js"></script>
+<script src="js/volunteer.js"></script>
+<script src="js/recipient.js"></script>
+<script src="js/employee.js"></script>
 </body>
 </html>

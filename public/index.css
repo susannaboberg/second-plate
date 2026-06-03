@@ -1,5 +1,3 @@
-
-
 body {
     font-family: sans-serif;
     max-width: 900px;
@@ -172,4 +170,122 @@ td.remove-col {
     margin: 0;
     padding: 0;
     cursor: pointer;
+}
+
+/* ── Recipient food browser layout ── */
+.recipient-food-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* Left: vertical category sidebar */
+.category-sidebar {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+    flex-shrink: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.category-tab {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 9px 12px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.88em;
+    color: #333;
+    white-space: nowrap;
+}
+
+.category-tab:last-child {
+    border-bottom: none;
+}
+
+.category-tab:hover {
+    background: #f0f0f0;
+}
+
+.category-tab.active {
+    background: #eee;
+    font-weight: bold;
+}
+
+/* Right: filters + table */
+.recipient-food-right {
+    flex: 1;
+    min-width: 0;
+}
+
+/* "More Filters" toggle button */
+.filter-toggle-btn {
+    padding: 5px 12px;
+    font-size: 0.85em;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.food-filter-bar {
+    margin-bottom: 4px;
+}
+
+/* Inline filter row */
+.filter-fieldset {
+    margin-bottom: 12px !important;
+    padding: 10px !important;
+}
+
+.filter-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+}
+
+.filter-group label {
+    font-size: 0.85em;
+    margin-bottom: 2px;
+}
+
+.filter-group input {
+    width: 100%;
+    margin: 0;
+}
+
+.filter-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+/* Request qty column: narrower input */
+#available-foods-table td:last-child input {
+    width: 70px;
+}
+
+#available-foods-empty {
+    margin: 8px 0;
+}
+
+/* Submit request bar */
+.request-submit-bar {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#request-confirmation-details,
+#request-error {
+    text-align: right;
+    font-size: 0.9em;
+    margin-top: 6px;
 }
